@@ -78,9 +78,10 @@ export default class PathfindingVisualizer extends Component {
 
     return (
       <>
-        <button onClick={() => this.visualizeDijkstra()}>
-          Visualize Dijkstra's Algorithm
+        <button className="ready" onClick={() => this.visualizeDijkstra()}>
+          Visualize Dijkstra's Algorithm!
         </button>
+        <p>Click on the grid to generate walls!</p>
         <div className="grid">
           {grid.map((row, rowIdx) => {
             // Iterate through every row and col, then create a node

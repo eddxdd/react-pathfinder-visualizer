@@ -1,3 +1,15 @@
 .grid {
-  margin: 100px 0 0;
+  margin: 50px 0 0;
+}
+
+.ready {
+  color: #ffffff;
+  background-color: #1abc9c;
+  border: none;
+  font-size: 15px;
+  font-weight: normal;
+  line-height: 1.4;
+  border-radius: 4px;
+  padding: 10px 15px;
+  margin-top: 50px;
 }
