@@ -18,6 +18,7 @@ export default class PathfindingVisualizer extends Component {
     };
   }
 
+  // Initialization
   componentDidMount() {
     const grid = getInitialGrid();
     this.setState({ grid });
@@ -41,11 +42,13 @@ export default class PathfindingVisualizer extends Component {
     this.setState({ mouseIsPressed: false });
   }
 
+  // Grab the return value of visitedNodesInOrder = Dijkstra(grid, startNode, finishNode)
   animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder) {
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
-      // If we are done with setTimeout
+      // If we are done with setTimeout.
       if (i === visitedNodesInOrder.length) {
         setTimeout(() => {
+          // Then animateShortestPath
           this.animateShortestPath(nodesInShortestPathOrder);
         }, 10 * i);
         return;
@@ -76,11 +79,11 @@ export default class PathfindingVisualizer extends Component {
     const { grid } = this.state;
     const startNode = grid[START_NODE_ROW][START_NODE_COL];
     const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
-    // Call dijkstra() to return the array of visited nodes in order.
+    // First, call dijkstra() to return the array of visited nodes in order.
     const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
-    // Get the shortest path by starting at the finishNode and making your way back.
+    // Then, get the shortest path by starting at the finishNode and making your way back.
     const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-    // Call animateDijkstra() to return for every node, create a new node off that same node, and mark it as isVisited.
+    // Then, call animateDijkstra() to return for every node, create a new node off that same node, and mark it as isVisited.
     this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
   }
 
@@ -138,7 +141,7 @@ const getInitialGrid = () => {
   }
   return grid;
 };
-// Create node with properties.
+// Create node with its properties.
 const createNode = (col, row) => {
   return {
     col,
