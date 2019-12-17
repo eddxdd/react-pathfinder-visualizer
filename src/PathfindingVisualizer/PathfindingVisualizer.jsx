@@ -23,29 +23,36 @@ export default class PathfindingVisualizer extends Component {
     this.setState({ grid });
   }
 
+  // These next 3 handleMouse functions take care of creating the walls in the grid.
   handleMouseDown(row, col) {
     const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
     this.setState({ grid: newGrid, mouseIsPressed: true });
   }
 
+  // Only generate walls if we press on the mouse. (not hover)
   handleMouseEnter(row, col) {
     if (!this.state.mouseIsPressed) return;
     const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
     this.setState({ grid: newGrid });
   }
 
+  // Once we let go of mouse button, stop generating walls.
   handleMouseUp() {
     this.setState({ mouseIsPressed: false });
   }
 
   animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder) {
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
+      // If we are done with setTimeout
       if (i === visitedNodesInOrder.length) {
         setTimeout(() => {
           this.animateShortestPath(nodesInShortestPathOrder);
         }, 10 * i);
         return;
       }
+      // Update the class to node-visited.
+      // This is only a hack solution to help with animation speed. (not the best practice)
+      // Since re-rendering the entire component every 10ms was too slow.
       setTimeout(() => {
         const node = visitedNodesInOrder[i];
         document.getElementById(`node-${node.row}-${node.col}`).className =
@@ -56,6 +63,7 @@ export default class PathfindingVisualizer extends Component {
 
   animateShortestPath(nodesInShortestPathOrder) {
     for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
+      // Same concept as above, but for shortest path.
       setTimeout(() => {
         const node = nodesInShortestPathOrder[i];
         document.getElementById(`node-${node.row}-${node.col}`).className =
@@ -68,8 +76,11 @@ export default class PathfindingVisualizer extends Component {
     const { grid } = this.state;
     const startNode = grid[START_NODE_ROW][START_NODE_COL];
     const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+    // Call dijkstra() to return the array of visited nodes in order.
     const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
+    // Get the shortest path by starting at the finishNode and making your way back.
     const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+    // Call animateDijkstra() to return for every node, create a new node off that same node, and mark it as isVisited.
     this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
   }
 
@@ -84,13 +95,13 @@ export default class PathfindingVisualizer extends Component {
         <p>Click on the grid to generate walls!</p>
         <div className="grid">
           {grid.map((row, rowIdx) => {
-            // Iterate through every row and col, then create a node
+            // Iterate through every row and col, then create a node.
             return (
               <div key={rowIdx}>
                 {row.map((node, nodeIdx) => {
                   const { row, col, isStart, isFinish, isWall } = node;
                   return (
-                    // When you render the nodes, pass isStart, isFinish as properties
+                    // When you render the nodes, pass isStart, isFinish as properties.
                     <Node
                       key={nodeIdx}
                       col={col}
@@ -115,7 +126,7 @@ export default class PathfindingVisualizer extends Component {
     );
   }
 }
-
+// Create initial grid.
 const getInitialGrid = () => {
   const grid = [];
   for (let row = 0; row < 20; row++) {
@@ -127,6 +138,7 @@ const getInitialGrid = () => {
   }
   return grid;
 };
+// Create node with properties.
 const createNode = (col, row) => {
   return {
     col,
@@ -139,6 +151,7 @@ const createNode = (col, row) => {
     previousNode: null
   };
 };
+// For the handleMouse functions. Toggle between wall or not a wall.
 const getNewGridWithWallToggled = (grid, row, col) => {
   const newGrid = grid.slice();
   const node = newGrid[row][col];
