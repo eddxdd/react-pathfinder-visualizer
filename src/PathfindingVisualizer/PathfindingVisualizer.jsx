@@ -96,6 +96,8 @@ export default class PathfindingVisualizer extends Component {
           Visualize Dijkstra's Algorithm!
         </button>
         <p>Click on the grid to generate walls!</p>
+        <p>* This project is still in BETA and I am working on creating more algorithms. Currently, this will look better on Desktop only. <br>
+          But you should still be able to visualize Dijkstra's Algorithm and find the shortest path between two nodes.</p>
         <div className="grid">
           {grid.map((row, rowIdx) => {
             // Iterate through every row and col, then create a node.
